@@ -9,7 +9,7 @@ var errorRate = 0.0;
 var errerAlert = 0.30;
 var mailServer = email.server.connect({
   user: "freeman@zhenhai.com.tw",
-  password: "123439881",
+  password: "*********",
   host: "www.zhenhai.com.tw",
   ssl: false
 });
