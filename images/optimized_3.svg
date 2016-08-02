@@ -32,9 +32,9 @@
      inkscape:window-height="749"
      id="namedview1034"
      showgrid="false"
-     inkscape:zoom="0.43852551"
-     inkscape:cx="774.22292"
-     inkscape:cy="1401.3958"
+     inkscape:zoom="1.0824912"
+     inkscape:cx="811.80557"
+     inkscape:cy="1254.9254"
      inkscape:window-x="1280"
      inkscape:window-y="224"
      inkscape:window-maximized="0"
@@ -754,19 +754,15 @@
        class="machine"
        fill="none" />
     <rect
-       id="rect5466"
-       stroke-linejoin="miter"
-       stroke-dasharray="none"
+       id="E131"
        y="-224.33"
-       height="42.762"
-       width="42.762"
-       stroke="#000"
+       height="42.762001"
+       width="42.762001"
        stroke-miterlimit="4"
-       x="649.77"
-       stroke-width="0.43067"
+       x="649.77002"
        class="machine"
-       fill="none"
-       inkscape:label="" />
+       inkscape:label="#E131"
+       style="fill:none;stroke:#000000;stroke-width:0.43066999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
        id="G62"
        stroke-linejoin="miter"
@@ -791,7 +787,7 @@
        d="m1617,80.534-69.82,0.31089,34.641-60.622z"
        inkscape:label="#G64" />
     <path
-       id="G31"
+       id="G65"
        stroke-linejoin="miter"
        transform="matrix(0.60730389,0.00244649,-0.0021199,0.70086486,-247.03522,-242.01101)"
        fill="none"
@@ -801,7 +797,7 @@
        stroke-width="0.66062415"
        class="machine"
        d="m1617,80.534-69.82,0.31089,34.641-60.622z"
-       inkscape:label="#G31" />
+       inkscape:label="#G65" />
     <rect
        id="E100"
        stroke-linejoin="miter"
@@ -878,12 +874,12 @@
        class="machine"
        d="m1617,80.534-69.82,0.31089,34.641-60.622z" />
     <path
-       id="G65"
+       id="G31"
        transform="matrix(0.60730389,0.00244649,-0.0021199,0.70086486,-384.99422,-295.85401)"
        stroke-miterlimit="4"
        class="machine"
        d="m 1617,80.534 -69.82,0.31089 34.641,-60.622 z"
-       inkscape:label="#G65"
+       inkscape:label="#G31"
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:0.66062415;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
@@ -1117,7 +1113,7 @@
        inkscape:label="#E25"
        style="fill:none;stroke:#000000;stroke-width:0.43066999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
     <rect
-       id="E131"
+       id="E133"
        stroke-linejoin="miter"
        stroke-dasharray="none"
        y="-224.33"
@@ -1129,7 +1125,7 @@
        stroke-width="0.43067"
        class="machine"
        fill="none"
-       inkscape:label="#E131" />
+       inkscape:label="#E133" />
     <path
        id="G25"
        transform="matrix(0.60730389,0.00244649,-0.0021199,0.70086486,-660.1697,-348.99354)"
@@ -2530,7 +2526,7 @@
        class="machine"
        d="m1617,80.534-69.82,0.31089,34.641-60.622z" />
     <path
-       id="G103"
+       id="G106_1"
        stroke-linejoin="miter"
        transform="matrix(0.60730389,0.00244649,-0.0021199,0.70086486,-384.9942,-572.01068)"
        fill="none"
@@ -3829,15 +3825,11 @@
        d="m349.82,524.17-29.615-0.1409-9.0176-28.209,24.042-17.293,23.876,17.521z" />
     <path
        id="T22"
-       stroke-linejoin="miter"
-       transform="matrix(0.95517169,-0.00548298,0.00619438,1.0428,-192.22113,-17.597055)"
-       fill="none"
-       stroke="#000"
        stroke-miterlimit="4"
-       stroke-dasharray="none"
-       stroke-width="0.70499998"
        class="machine"
-       d="m349.82,524.17-29.615-0.1409-9.0176-28.209,24.042-17.293,23.876,17.521z" />
+       d="m 363.59824,527.67519 -28.28829,0.0154 -8.78809,-29.3669 22.85712,-18.16496 22.91421,18.13998 z"
+       inkscape:connector-curvature="0"
+       style="fill:none;stroke:#000000;stroke-width:0.7036193;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
        id="T04"
        stroke-linejoin="miter"
@@ -7330,14 +7322,14 @@
        transform="scale(0.94276751,1.0607069)"
        font-size="14px"
        font-style="normal"
-       y="471.35831"
-       x="127.00633"
+       y="471.91058"
+       x="358.70111"
        line-height="125%"
        sodipodi:linespacing="125%"><tspan
          id="tspan4635-58-8-6-3-9-4-7-8-4-2"
          font-size="14px"
-         y="471.35831"
-         x="127.00633"
+         y="471.91058"
+         x="358.70111"
          style="font-size:14px">T22</tspan></text>
     <text
        id="text4633-9-4-3-8-6-8-9-3-7-8-0"
@@ -7921,7 +7913,7 @@
          font-size="14px"
          y="-186.9205"
          x="743.5603"
-         style="font-size:14px">G31</tspan></text>
+         style="font-size:14px">G65</tspan></text>
     <text
        id="text4633-9-5-6-17"
        style="letter-spacing:0px;word-spacing:0px;"
@@ -8040,7 +8032,7 @@
          font-size="14px"
          y="-237.68192"
          x="599.34772"
-         style="font-size:14px">G65</tspan></text>
+         style="font-size:14px">G31</tspan></text>
     <text
        id="text4633-9-5-2-50-0-5-0"
        style="letter-spacing:0px;word-spacing:0px;"
@@ -8407,14 +8399,14 @@
        font-size="14px"
        font-style="normal"
        y="-198.76392"
-       x="259.24969"
+       x="257.12827"
        line-height="125%"
        sodipodi:linespacing="125%"><tspan
          id="tspan4635-58-0-1-5-92-97"
          font-size="14px"
          y="-198.76392"
-         x="259.24969"
-         style="font-size:14px">E131</tspan></text>
+         x="257.12827"
+         style="font-size:14px">E133</tspan></text>
     <text
        id="text4633-9-5-2-4-0-5"
        style="letter-spacing:0px;word-spacing:0px;"
@@ -9746,7 +9738,7 @@
        id="C06"
        stroke-miterlimit="4"
        class="machine"
-       d="m 364.46945,526.92886 -28.28828,0.0155 -8.7881,-29.3669 22.85712,-18.16496 22.91421,18.13998 z"
+       d="m 145.07755,526.2191 -28.28828,0.0155 -8.7881,-29.3669 22.85712,-18.16496 22.91421,18.13998 z"
        inkscape:label="#C06" />
     <text
        sodipodi:linespacing="125%"
@@ -9757,14 +9749,14 @@
        transform="scale(0.9427675,1.0607069)"
        font-size="14px"
        font-style="normal"
-       y="471.67032"
-       x="358.48352"
+       y="471.00119"
+       x="125.77302"
        line-height="125%"><tspan
          style="font-size:14px"
          id="tspan4635-58-8-6-3-9-4-0-7-0"
          font-size="14px"
-         y="471.67032"
-         x="358.48352">C06</tspan></text>
+         y="471.00119"
+         x="125.77302">C06</tspan></text>
     <path
        id="T24"
        d="m 87.737845,624.49903 -28.28829,0.0154 -8.78809,-29.3669 22.85712,-18.16496 22.91421,18.13998 z"
@@ -9790,5 +9782,22 @@
          y="561.7702"
          x="66.094345"
          style="font-size:14px">T24</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-2-50-0-5-0-2"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="-198.60396"
+       x="694.9519"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-0-51-7-3-2-7"
+         font-size="14px"
+         y="-198.60396"
+         x="694.9519">E131</tspan></text>
   </g>
 </svg>
