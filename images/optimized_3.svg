@@ -32,9 +32,9 @@
      inkscape:window-height="957"
      id="namedview1034"
      showgrid="false"
-     inkscape:zoom="1.01"
-     inkscape:cx="785.51672"
-     inkscape:cy="1387.6159"
+     inkscape:zoom="0.98"
+     inkscape:cx="874.66476"
+     inkscape:cy="297.6301"
      inkscape:window-x="8"
      inkscape:window-y="5"
      inkscape:window-maximized="0"
@@ -68,7 +68,7 @@
        class="machine"
        fill="none" />
     <rect
-       id="E26"
+       id="E54"
        y="-225.25861"
        height="42.762001"
        width="42.762001"
@@ -689,7 +689,7 @@
        class="machine"
        d="m1617,80.534-69.82,0.31089,34.641-60.622z" />
     <rect
-       id="rect4941-5-7-7-1-1-3"
+       id="E62"
        stroke-linejoin="miter"
        stroke-dasharray="none"
        y="-384.09"
@@ -701,7 +701,7 @@
        stroke-width="0.431"
        class="machine"
        fill="none"
-       inkscape:label="" />
+       inkscape:label="#E62" />
     <rect
        id="E129"
        stroke-linejoin="miter"
@@ -740,7 +740,7 @@
        inkscape:label="#E131"
        style="fill:none;stroke:#000000;stroke-width:0.43066999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
-       id="rect4941-5-7-7-1-1-2"
+       id="G62"
        stroke-linejoin="miter"
        transform="matrix(0.60730389,0.00244649,-0.0021199,0.70086486,-289.48672,-401.77402)"
        fill="none"
@@ -750,7 +750,7 @@
        stroke-width="0.66062415"
        class="machine"
        d="m1617,80.534-69.82,0.31089,34.641-60.622z"
-       inkscape:label="" />
+       inkscape:label="#G62" />
     <path
        id="G64"
        stroke-linejoin="miter"
@@ -2157,7 +2157,7 @@
        class="machine"
        fill="none" />
     <rect
-       id="E101"
+       id="E134"
        stroke-linejoin="miter"
        stroke-dasharray="none"
        y="-767"
@@ -2168,7 +2168,8 @@
        x="1031.4"
        stroke-width="0.431"
        class="machine"
-       fill="none" />
+       fill="none"
+       inkscape:label="#E134" />
     <rect
        id="E108"
        stroke-linejoin="miter"
@@ -4996,7 +4997,7 @@
          x="1217.4436">E49-S3</tspan></text>
     <text
        id="text4633-9-5-26-8-6-3"
-       style="letter-spacing:0px;word-spacing:0px;"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
        font-weight="normal"
        xml:space="preserve"
        transform="scale(0.94276751,1.0607069)"
@@ -5004,13 +5005,13 @@
        font-style="normal"
        y="-710.46472"
        x="1120.8195"
-       font-family="Sans"
        line-height="125%"
-       fill="#000000"><tspan
+       sodipodi:linespacing="125%"><tspan
          id="tspan4635-58-0-43-4-2-90"
          font-size="14px"
          y="-710.46472"
-         x="1120.8195">E101</tspan></text>
+         x="1120.8195"
+         style="font-size:14px">E134</tspan></text>
     <text
        id="text4633-9-5-26-8-6-8-5"
        style="letter-spacing:0px;word-spacing:0px;"
@@ -5435,7 +5436,7 @@
          font-size="14px"
          y="-199.64194"
          x="1341.0374"
-         style="font-size:14px">E26</tspan></text>
+         style="font-size:14px">E54</tspan></text>
     <text
        id="text4633-9-5-2-5"
        style="letter-spacing:0px;word-spacing:0px;"
@@ -9646,46 +9647,12 @@
          y="270.65283"
          x="780.96893">A77</tspan></text>
     <path
-       id="rect-unname-1"
+       id="A79"
        d="m 712.78558,531.42107 c 0,13.37473 -10.84238,24.21711 -24.21711,24.21711 -13.37473,0 -24.21711,-10.84238 -24.21711,-24.21711 0,-13.37473 10.84238,-24.21711 24.21711,-24.21711 13.37473,0 24.21711,10.84238 24.21711,24.21711 z"
        class="machine"
-       inkscape:label=""
+       inkscape:label="#A79"
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:0.49997127px;stroke-linecap:butt;stroke-linejoin:miter" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text4633-9-5-2-4-31-2"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
-       font-weight="normal"
-       xml:space="preserve"
-       transform="scale(0.9427675,1.0607069)"
-       font-size="14px"
-       font-style="normal"
-       y="-337.49814"
-       x="735.9198"
-       line-height="125%"><tspan
-         style="font-size:14px"
-         id="tspan4635-58-0-0-94-13-0"
-         font-size="14px"
-         y="-337.49814"
-         x="735.9198">待編號 </tspan></text>
-    <text
-       sodipodi:linespacing="125%"
-       id="text4633-9-5-2-4-31-2-3"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
-       font-weight="normal"
-       xml:space="preserve"
-       transform="scale(0.9427675,1.0607069)"
-       font-size="14px"
-       font-style="normal"
-       y="-337.09814"
-       x="689.9986"
-       line-height="125%"><tspan
-         style="font-size:14px"
-         id="tspan4635-58-0-0-94-13-0-6"
-         font-size="14px"
-         y="-337.09814"
-         x="689.9986">待編號 </tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text4633-9-5-2-4-31-2-0"
@@ -9695,13 +9662,98 @@
        transform="scale(0.9427675,1.0607069)"
        font-size="14px"
        font-style="normal"
-       y="497.12683"
-       x="709.42987"
+       y="493.35571"
+       x="715.79425"
        line-height="125%"><tspan
          style="font-size:14px"
          id="tspan4635-58-0-0-94-13-0-8"
          font-size="14px"
-         y="497.12683"
-         x="709.42987">待編號 </tspan></text>
+         y="493.35571"
+         x="715.79425">A79</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-6-17-0"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="-349.11078"
+       x="743.85748"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-1-81-0"
+         font-size="14px"
+         y="-349.11078"
+         x="743.85748">E62</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-2-4-0-6-1"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="-334.66504"
+       x="698.21326"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-0-94-3-6-8"
+         font-size="14px"
+         y="-334.66504"
+         x="698.21326">G62</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.43066999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
+       id="E99"
+       y="-331.76968"
+       height="42.762001"
+       width="42.762001"
+       stroke-miterlimit="4"
+       x="459.96295"
+       class="machine" />
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:none;stroke:#000000;stroke-width:0.43099636;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
+       id="G99"
+       stroke-miterlimit="4"
+       class="machine"
+       d="m 545.00041,-289.05129 -42.40261,0.0471 21.16612,-42.40308 z"
+       inkscape:label="#G99" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-6-8-84-5-9"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="-300.05457"
+       x="498.44968"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-1-5-92-1-6"
+         font-size="14px"
+         y="-300.05457"
+         x="498.44968">E99</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-2-50-0-5-06-4"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="-288.21118"
+       x="542.23389"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-0-51-7-3-9-7"
+         font-size="14px"
+         y="-288.21118"
+         x="542.23389">G99</tspan></text>
   </g>
 </svg>
