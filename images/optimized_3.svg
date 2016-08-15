@@ -32,9 +32,9 @@
      inkscape:window-height="957"
      id="namedview1034"
      showgrid="false"
-     inkscape:zoom="1.5308737"
-     inkscape:cx="987.56151"
-     inkscape:cy="264.38002"
+     inkscape:zoom="1.01"
+     inkscape:cx="785.51672"
+     inkscape:cy="1387.6159"
      inkscape:window-x="8"
      inkscape:window-y="5"
      inkscape:window-maximized="0"
@@ -9485,14 +9485,14 @@
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:0.49996707px;stroke-linecap:butt;stroke-linejoin:miter"
        id="A72"
-       d="m 771.13901,82.184742 c 0,13.37474 -10.84237,24.217108 -24.21711,24.217108 -13.37473,0 -24.2171,-10.842368 -24.2171,-24.217108 0,-13.374731 10.84237,-24.217101 24.2171,-24.217101 13.37474,0 24.21711,10.84237 24.21711,24.217101 z"
+       d="m 722.14697,82.837969 c 0,13.37474 -10.84237,24.217111 -24.21711,24.217111 -13.37473,0 -24.2171,-10.842371 -24.2171,-24.217111 0,-13.374731 10.84237,-24.217101 24.2171,-24.217101 13.37474,0 24.21711,10.84237 24.21711,24.217101 z"
        class="machine"
        inkscape:label="#A72" />
     <path
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:0.49996707px;stroke-linecap:butt;stroke-linejoin:miter"
        id="A73"
-       d="m 722.35397,83.113977 c 0,13.37475 -10.84237,24.217113 -24.21711,24.217113 -13.37473,0 -24.2171,-10.842363 -24.2171,-24.217113 0,-13.374727 10.84237,-24.217097 24.2171,-24.217097 13.37474,0 24.21711,10.84237 24.21711,24.217097 z"
+       d="m 772.35447,83.113977 c 0,13.37475 -10.84237,24.217113 -24.21711,24.217113 -13.37473,0 -24.2171,-10.842363 -24.2171,-24.217113 0,-13.374727 10.84237,-24.217097 24.2171,-24.217097 13.37474,0 24.21711,10.84237 24.21711,24.217097 z"
        class="machine"
        inkscape:label="#A73" />
     <text
@@ -9504,14 +9504,14 @@
        transform="scale(0.9427675,1.0607069)"
        font-size="14px"
        font-style="normal"
-       y="69.344177"
-       x="779.01056"
+       y="69.960022"
+       x="727.04437"
        line-height="125%"><tspan
          style="font-size:14px"
          id="tspan4635-8-8-13-4"
          font-size="14px"
-         y="69.344177"
-         x="779.01056">A72</tspan></text>
+         y="69.960022"
+         x="727.04437">A72</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text4633-8-3-0-4-8"
@@ -9522,13 +9522,13 @@
        font-size="14px"
        font-style="normal"
        y="69.344177"
-       x="727.41412"
+       x="780.45056"
        line-height="125%"><tspan
          style="font-size:14px"
          id="tspan4635-8-8-13-4-9"
          font-size="14px"
          y="69.344177"
-         x="727.41412">A73</tspan></text>
+         x="780.45056">A73</tspan></text>
     <path
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:0.7036134;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
@@ -9652,5 +9652,56 @@
        inkscape:label=""
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:0.49997127px;stroke-linecap:butt;stroke-linejoin:miter" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-2-4-31-2"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="-337.49814"
+       x="735.9198"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-0-94-13-0"
+         font-size="14px"
+         y="-337.49814"
+         x="735.9198">待編號 </tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-2-4-31-2-3"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="-337.09814"
+       x="689.9986"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-0-94-13-0-6"
+         font-size="14px"
+         y="-337.09814"
+         x="689.9986">待編號 </tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4633-9-5-2-4-31-2-0"
+       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000"
+       font-weight="normal"
+       xml:space="preserve"
+       transform="scale(0.9427675,1.0607069)"
+       font-size="14px"
+       font-style="normal"
+       y="497.12683"
+       x="709.42987"
+       line-height="125%"><tspan
+         style="font-size:14px"
+         id="tspan4635-58-0-0-94-13-0-8"
+         font-size="14px"
+         y="497.12683"
+         x="709.42987">待編號 </tspan></text>
   </g>
 </svg>
