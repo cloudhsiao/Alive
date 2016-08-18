@@ -64,12 +64,16 @@ flow.series([
         var data = m.filter(function(obj) {
           return obj.IP === ipArray[idx].IP;
         });
-        if (data.length > 0) { // if have data! it must be NOT alive -> 0 (false)
-          ipArray[idx].ALIVE = 0;
-          //console.log('<<<<<' + ipArray[idx].IP + '<<<<<' + ipArray[idx].ALIVE);
+        if (ipArray[idx].IP !== '') {
+          if (data.length > 0) { // if have data! it must be NOT alive -> 0 (false)
+            ipArray[idx].ALIVE = 0;
+            //console.log('<<<<<' + ipArray[idx].IP + '<<<<<' + ipArray[idx].ALIVE);
+          } else {
+            ipArray[idx].ALIVE = 1;
+            //console.log('<<<<!' + ipArray[idx].IP + '<<<<<' + ipArray[idx].ALIVE);
+          }
         } else {
-          ipArray[idx].ALIVE = 1;
-          //console.log('<<<<!' + ipArray[idx].IP + '<<<<<' + ipArray[idx].ALIVE);
+          ipArray[idx].ALIVE = 0;
         }
       }
 
