@@ -69,11 +69,7 @@
                 allMachine[idx].removeEventListener('click', showPopup);
                 allMachine[idx].addEventListener('click', showPopup);
 
-                // handle some special cases
-                if (allMachine[idx].id === 'G111_2' || allMachine[idx].id === 'G111_3'|| allMachine[idx].id === 'G106_1') {
-                  allMachine[idx].style.fill = '#cccccc';
-                  allMachine[idx].removeEventListener('click', showPopup);
-                }
+
                 var data = totalData.filter(function(obj) {
                   return obj.ID === allMachine[idx].id;
                 });
@@ -124,6 +120,12 @@
                     allMachine[idx].style.fill = '#cccccc';
                     allMachine[idx].removeEventListener('click', showPopup);
                   }
+                }
+
+                // handle some special cases
+                if (allMachine[idx].id === 'G111_2' || allMachine[idx].id === 'G111_3'|| allMachine[idx].id === 'G106_1') {
+                  allMachine[idx].style.fill = '#cccccc';
+                  allMachine[idx].removeEventListener('click', showPopup);
                 }
               }
 
