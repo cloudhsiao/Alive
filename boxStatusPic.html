@@ -101,10 +101,12 @@
                     if (data[0].STATUS === '10' || data[0].STATUS === '') { 
                       allMachine[idx].style.fill = '#ff0000';
                       count(data[0].ID, 0);
+                      console.log('ID: ' + data[0].ID + ', status: stand-by, reason: status == "' + data[0].STATUS + '"');
                     } else                               // status 09 with no qty!
                     if (data[0].STATUS === '09' && data[0].QTY == 0) {
                       allMachine[idx].style.fill = '#ff0000';
                       count(data[0].ID, 0);
+                      console.log('ID: ' + data[0].ID + ', status: stand-by, reason: status == 09 && qty == 0');
                     } else {                             // others, no special situation.
                       allMachine[idx].style.fill = '#00ff00';
                       count(data[0].ID, 1);
@@ -114,16 +116,21 @@
                   if(data[0].ALIVE == 0 && data[0].NOTE === '') { 
                     allMachine[idx].style.fill = '#0000ff';
                     count(data[0].ID, 0);
+                    console.log('ID: ' + data[0].ID + ', status: offline, reason: alive == 0 && note == ""');
                   }
 
                   if (data[0].NOTE !== '' || data[0].IP === '') {             // not install Pi
                     allMachine[idx].style.fill = '#cccccc';
                     allMachine[idx].removeEventListener('click', showPopup);
+                    console.log('ID: ' + data[0].ID + ', status: not-installed-yet, reason: note == ' + data[0].NOTE + ', IP == "' + data[0].IP + '"');
                   }
                 }
 
                 // handle some special cases
-                if (allMachine[idx].id === 'G111_2' || allMachine[idx].id === 'G111_3'|| allMachine[idx].id === 'G106_1') {
+                if (allMachine[idx].id === 'G111-1' || allMachine[idx].id === 'G111-2' || allMachine[idx].id === 'G111-3'|| 
+                    allMachine[idx].id === 'G106-1' ||
+                    allMachine[idx].id === 'G103-1' ||
+                    allMachine[idx].id === 'G49-1') {
                   allMachine[idx].style.fill = '#cccccc';
                   allMachine[idx].removeEventListener('click', showPopup);
                 }
