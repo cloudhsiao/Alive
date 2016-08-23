@@ -5,9 +5,39 @@
         <title>Box Connection Status</title>
         <script src="/jquery-1.11.3.min.js"></script>
         <script src="/socket.io-1.3.5.js"></script>
+        <script src="common.js"></script>
         <script>
+            // 機台顏色代表狀態：
+            // working: 正常運作
+            // normal: 正常運作但無良品
+            // idle: 閒置
+            // stand-by: 待機
+            // offline: 離線
+            // no-watch: 未安裝
+            var COLOR_NORMAL = '#006600';
+            var COLOR_WORKING = '#00ff00';
+            var COLOR_IDLE = '#ffff00';
+            var COLOR_STANDBY = '#ff0000';
+            var COLOR_OFFLINE = '#0000ff';
+            var COLOR_NOWATCH = '#cccccc';
+            var COLOR_EMPTY = '#ffffff';
+
+            // 機台類型-變數命名規則，適用各廠區
+            // 加締：E
+            // 組立：G
+            // 老化、選別：A
+            // 加工、切腳：T
+            // 包裝：B
+            var TYPE_E = 1;
+            var TYPE_G = 2;
+            var TYPE_A = 3;
+            var TYPE_T = 4;
+            var TYPE_C = 4.1;
+            var TYPE_B = 5;
+            var TYPE_UNKNOWN = 0;
+
+            // declare variables
             var socket = io();
-            var tatalData;
             var mapDoc;
 
             var totalE = 0,    totalG = 0,    totalA = 0,    totalTC = 0;
@@ -15,33 +45,189 @@
             var notGoodE = 0, notGoodG = 0, notGoodA = 0, notGoodTC = 0;
             var rateE = 0,     rateG = 0,     rateA = 0,     rateTC = 0;
 
-            var totalMachine = 0, totalRed = 0, totalGray = 0;
+            var workingE = 0; // 加締正常
+            var workingG = 0; // 組立正常
+            var workingA = 0; // 老化正常
+            var workingOther = 0; // 其他(選別/加工切腳) 正常
+            var idleE = 0; // 加締閒置
+            var idleG = 0; // 組立閒置
+            var idleA = 0; // 老化閒置
+            var idleOther = 0; // 其他閒置
+            var normalE = 0; // 加締正常無良品
+            var normalG = 0; // 組立正常無良品
+            var normalA = 0; // 老化正常無良品
+            var normalOther = 0; // 其他正常無良品
+            var standbyE = 0; // 加締待機
+            var standbyG = 0; // 組立待機
+            var standbyA = 0; // 老化待機
+            var standbyOther = 0; // 其他待機
+            var offlineE = 0; // 加締離線
+            var offlineG = 0; // 組立離線
+            var offlineA = 0; // 老化離線
+            var offlineOther = 0; // 其他離線
+
+            function getMachineTypeByIDInDG(ID) {
+              if (ID.indexOf('E') > -1) {
+                // 加締
+                return TYPE_E;
+              } else if (ID.indexOf('G') > -1) {
+                // 組立
+                return TYPE_G;
+              } else if (ID.indexOf('A') > -1) {
+                // 老化 & 選別
+                return TYPE_A;
+              } else if (ID.indexOf('T') > -1) {
+                // Tapping
+                return TYPE_T;
+              } else if (ID.indexOf('C') > -1) {
+                // Cut
+                return TYPE_C;
+              } else if (ID.indexof('B') > -1) {
+                // 包裝
+                return TYPE_B;
+              }
+
+              return TYPE_UNKNOWN;
+            }
+
+            function getMachineTypeByIDInSZ(ID) {
+              if (ID.indexOf('W') > -1) {
+                // 加締
+                return TYPE_E;
+              } else if (ID.indexOf('A') > -1) {
+                // 組立
+                return TYPE_G;
+              } else if (ID.indexOf('S060') > -1 || ID.indexOf('S124') > -1 || ID.indexOf('S160') > -1 || ID.indexOf('V171') > -1 || ID.indexOf('GT') > -1) {  // 老化
+                return TYPE_A;
+              } else if (ID.indexOf('RS') > -1 || ID.indexOf('SC') > -1) {
+                // 其他
+                return TYPE_C;
+              }
+
+              return TYPE_UNKNOWN;
+            }
+
+            function getMachineColor(alive, status, qty, note) {
+              if (alive === 1) {              // Pi is alive!
+                if (status === '01') {       // status 01 (running)
+                  if (qty === 0) {            // working, but qty = 0
+                    return COLOR_NORMAL;
+                  } else {                           // working with good qty!
+                    return COLOR_WORKING;
+                  }
+                } else if (status === '05') {       // status 05 (idle)
+                  return COLOR_IDLE;
+                } else if (status === '10' || status === '') { 
+                  return COLOR_STANDBY;
+                } else if (status === '09' && qty === 0) {
+                  return COLOR_STANDBY;
+                } else {                             // others, no special situation.
+                  return COLOR_WORKING;
+                }
+              } else if (alive === 0 && note === '') { // Pi is not in service
+                return COLOR_OFFLINE;
+              }
+              return COLOR_NOWATCH;
+            }
+
+            function countMachineType(type, status) {            
+              if (type === 1) {
+                if (status === COLOR_WORKING) {
+                  workingE++;
+                  goodE++;
+                } else if (status === COLOR_IDLE) {
+                  idleE++;
+                  goodE++;
+                } else if (status === COLOR_NORMAL) {
+                  normalE++;
+                  notGoodE++;
+                } else if (status === COLOR_STANDBY) {
+                  standbyE++;
+                  notGoodE++;
+                } else if (status === COLOR_OFFLINE) {
+                  offlineE++;
+                  notGoodE++;
+                }
+                totalE++;                
+              }
+              
+              if (type === 2) {
+                if (status === COLOR_WORKING) {
+                  workingG++;
+                  goodG++;
+                } else if (status === COLOR_IDLE) {
+                  idleG++;
+                  goodG++;
+                } else if (status === COLOR_NORMAL) {
+                  normalG++;
+                  notGoodG++;
+                } else if (status === COLOR_STANDBY) {
+                  standbyG++;
+                  notGoodG++;
+                } else if (status === COLOR_OFFLINE) {
+                  offlineG++;
+                  notGoodG++;
+                }
+                totalG++;  
+              }
+              
+              if (type === 3) {
+                if (status === COLOR_WORKING) {
+                  workingA++;
+                  goodA++;
+                } else if (status === COLOR_IDLE) {
+                  idleA++;
+                  goodA++;
+                } else if (status === COLOR_NORMAL) {
+                  normalA++;
+                  notGoodA++;
+                } else if (status === COLOR_STANDBY) {
+                  standbyA++;
+                  notGoodA++;
+                } else if (status === COLOR_OFFLINE) {
+                  offlineA++;
+                  notGoodA++;
+                }
+                totalA++; 
+              }
+
+              if (type === TYPE_T || type === TYPE_C || type === TYPE_B) {
+                if (status === COLOR_WORKING) {
+                  workingOther++;
+                  goodTC++;
+                } else if (status === COLOR_IDLE) {
+                  idleOther++;
+                  goodTC++;
+                } else if (status === COLOR_NORMAL) {
+                  normalOther++;
+                  notGoodTC++;
+                } else if (status === COLOR_STANDBY) {
+                  standbyOther++;
+                  notGoodTC++;
+                } else if (status === COLOR_OFFLINE) {
+                  offlineOther++;
+                  notGoodTC++;
+                }
+                totalTC++; 
+              }
+            }
 
             function showPopup() {
-                var d = new Date();
-                if (d.getHours()<7) {
-                    d.setDate(d.getDate()-1);
-                }
-                var type = 0;
-                var ID = this.id;
-                if (ID.indexOf('E') > -1) {                         // 加締
-                  type = 1;
-                } else
-                if (ID.indexOf('G') > -1) {                         // 組立
-                  type = 2;
-                } else
-                if (ID.indexOf('A') > -1) {                         // 老化
-                  type = 3;
-                } else
-                if (ID.indexOf('T') > -1 || ID.indexOf('C') > -1) { // 其他
-                  type = 5;
-                }
-                
-                //console.log(d.getFullYear() + '/'+ (d.getMonth()+1)  + '/' + d.getDate()  + ' \n' +
-                //            d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()  +  ' hihi ' + this.id);
-                var w = window.open('http://221.4.141.146/daily/' + d.getFullYear() + '/' +
-                            (d.getMonth()+1) + '/' + type + '/' + d.getDate() + '/' + ID,
-                            ID+'機台狀態', 'width=600;height=600,scrollbars=1');
+              var d = new Date();
+              if (d.getHours()<7) {
+                  d.setDate(d.getDate()-1);
+              }
+              var ID = this.id;
+              var branch = getBranchName();
+              var type = branch === 'dg' ? getMachineTypeByIDInDG(data[0].ID) : getMachineTypeByIDInSZ(data[0].ID);
+
+              if (type > 3) {
+                type = 5;
+              }
+              // http://hostname/daily/2016/8/1/23/E49-K2
+              var w = window.open('http://'+ getHostName() + '/daily/' + d.getFullYear() + '/' + (d.getMonth()+1) + '/' + type + '/' + d.getDate() + '/' + ID,
+                        ID + '機台狀態', 
+                        'width=600;height=600,scrollbars=1');
             }
 
             // 接收到 PING 資料 --------START
@@ -51,6 +237,28 @@
               totalE = 0;    totalG = 0;    totalA = 0;    totalTC = 0;
               goodE = 0;     goodG = 0;     goodA = 0;     goodTC = 0;
               notGoodE = 0; notGoodG = 0; notGoodA = 0; notGoodTC = 0;
+
+              workingE = 0;
+              workingG = 0;
+              workingA = 0;
+              workingOther = 0;
+              idleE = 0;
+              idleG = 0;
+              idleA = 0;
+              idleOther = 0;
+              normalE = 0;
+              normalG = 0;
+              normalA = 0;
+              normalOther = 0;
+              standbyE = 0;
+              standbyG = 0;
+              standbyA = 0;
+              standbyOther = 0;
+              offlineE = 0;
+              offlineG = 0;
+              offlineA = 0;
+              offlineOther = 0;
+
               // 0. parse income data into totalData
               totalData = jQuery.parseJSON(msg);
 
@@ -69,61 +277,23 @@
                 allMachine[idx].removeEventListener('click', showPopup);
                 allMachine[idx].addEventListener('click', showPopup);
 
-
                 var data = totalData.filter(function(obj) {
                   return obj.ID === allMachine[idx].id;
                 });
-                if (data.length > 0) {
-/*
-                  console.log(data[0].ID + 
-                    ', IP: '     + data[0].IP +
-                    ', NOTE: '   + data[0].NOTE +
-                    ', STATUS: ' + data[0].STATUS + 
-                    ', ALIVE: '  + data[0].ALIVE +
-                    ', QTY: '    + data[0].QTY);
-*/
-                  if (data[0].ALIVE == 1) {              // Pi is alive!
 
-                    if (data[0].STATUS === '01') {       // status 01 (running)
-                      if (data[0].QTY == 0) {            // working, but qty = 0
-                        allMachine[idx].style.fill = '#006600';
-                        //console.log(data[0].ID);
-                        count(data[0].ID, 0);
-                      } else {                           // working with good qty!
-                        allMachine[idx].style.fill = '#00ff00';
-                        count(data[0].ID, 1);
-                      }
-                    } else 
-                    if (data[0].STATUS === '05') {       // status 05 (idle)
-                      allMachine[idx].style.fill = '#ffff00';
-                      count(data[0].ID, 1);
-                    } else                               // standby
-                    if (data[0].STATUS === '10' || data[0].STATUS === '') { 
-                      allMachine[idx].style.fill = '#ff0000';
-                      count(data[0].ID, 0);
-                      console.log('ID: ' + data[0].ID + ', status: stand-by, reason: status == "' + data[0].STATUS + '"');
-                    } else                               // status 09 with no qty!
-                    if (data[0].STATUS === '09' && data[0].QTY == 0) {
-                      allMachine[idx].style.fill = '#ff0000';
-                      count(data[0].ID, 0);
-                      console.log('ID: ' + data[0].ID + ', status: stand-by, reason: status == 09 && qty == 0');
-                    } else {                             // others, no special situation.
-                      allMachine[idx].style.fill = '#00ff00';
-                      count(data[0].ID, 1);
-                    }
+                if (data.length > 0) { // to determine if the return data is in the json file.
+                  var branch = getBranchName();
+                  var type = branch === 'dg' ? getMachineTypeByIDInDG(data[0].ID) : getMachineTypeByIDInSZ(data[0].ID);
+                  var status = getMachineColor(data[0].ALIVE, data[0].STATUS, data[0].QTY, data[0].NOTE);
 
-                  } else                                 // fucking dead Pi
-                  if(data[0].ALIVE == 0 && data[0].NOTE === '') { 
-                    allMachine[idx].style.fill = '#0000ff';
-                    count(data[0].ID, 0);
-                    console.log('ID: ' + data[0].ID + ', status: offline, reason: alive == 0 && note == ""');
-                  }
+                  countMachineType(type, status);
+                  allMachine[idx].style.fill = status;
 
-                  if (data[0].NOTE !== '' || data[0].IP === '') {             // not install Pi
-                    allMachine[idx].style.fill = '#cccccc';
+                  if (status === COLOR_NOWATCH || status === COLOR_EMPTY) {
                     allMachine[idx].removeEventListener('click', showPopup);
-                    console.log('ID: ' + data[0].ID + ', status: not-installed-yet, reason: note == ' + data[0].NOTE + ', IP == "' + data[0].IP + '"');
                   }
+
+                  console.log('id: ' + data[0].ID + ', alive: ' + data[0].ALIVE + ', status: ' + data[0].STATUS + ', qty: ' + data[0].QTY);
                 }
 
                 // handle some special cases
@@ -148,7 +318,7 @@
                                         '<th>今日良品數</th></tr>');
               for (var idx = 0, x = totalData.length; idx < x; idx++) {
                 $('#data table').append('<tr><td width="10%">' + totalData[idx].ID   + '</td>' +
-                                            '<td width="10%">' + totalData[idx].TYPE + '</td>' +
+                                            '<td width="10%">' + totalData[idx].MODEL + '</td>' +
                                             '<td width="10%">' + totalData[idx].IP   + '</td>' +
                                             '<td width="10%">' + totalData[idx].SIZE + '</td>' +
                                             '<td width="10%">' + totalData[idx].NOTE + '</td>' +
@@ -156,64 +326,50 @@
                                             '<td width="10%">' + totalData[idx].ALIVE + '</td>' +
                                             '<td width="10%">' + totalData[idx].QTY + '</td></tr>');
               }
-            });
-            // 接收到 PING 資料 --------END
 
-            // 計算各機種的稼動率 --------START
-            /*
-            $('#SELECT_E option').remove();
-            $('#SELECT_G option').remove();
-            $('#SELECT_A option').remove();
-            $('#SELECT_TC option').remove();
-            */
-            function count(ID, isGood) {
-              if (ID.indexOf('E') > -1) {                         // 加締
-                totalE++;
-                if (Boolean(isGood)) { goodE++; } else { notGoodE++; }
-                rateE = new Number(goodE / totalE * 100);
-
-                //$('#SELECT_E').append($('<option></option>').attr('value', ID).text(ID));
-              } else
-              if (ID.indexOf('G') > -1) {                         // 組立
-                totalG++;
-                if (Boolean(isGood)) { goodG++; } else { notGoodG++; }
-                rateG = new Number(goodG / totalG * 100);
-
-                //$('#SELECT_G').append($('<option></option>').attr('value', ID).text(ID));
-              } else
-              if (ID.indexOf('A') > -1) {                         // 老化
-                totalA++;
-                if (Boolean(isGood)) { goodA++; } else { notGoodA++; }
-                rateA = new Number(goodA / totalA * 100);
-
-                //$('#SELECT_A').append($('<option></option>').attr('value', ID).text(ID));
-              } else
-              if (ID.indexOf('T') > -1 || ID.indexOf('C') > -1) { // 其他
-                totalTC++;
-                if (Boolean(isGood)) { goodTC++; } else { notGoodTC++; }
-                rateTC = new Number(goodTC / totalTC * 100);
-
-                //$('#SELECT_TC').append($('<option></option>').attr('value', ID).text(ID));
-              }
-              $('#E_TOTAL').html(totalE);
+              rateE = new Number(goodE / totalE * 100);
+              rateG = new Number(goodG / totalG * 100);
+              rateA = new Number(goodA / totalA * 100);
+              rateTC = new Number(goodTC / totalTC * 100);
+               $('#E_TOTAL').html(totalE);
+              $('#E_WORKING').html(workingE);
+              $('#E_IDLE').html(idleE);
+              $('#E_NORMAL').html(normalE);
+              $('#E_STANDBY').html(standbyE);
+              $('#E_OFFLINE').html(offlineE);
               $('#E_GOOD').html(goodE);
               $('#E_NOTGOOD').html(notGoodE);
               $('#E_RATE').html(rateE.toFixed(2) + '%');
               $('#G_TOTAL').html(totalG);
+              $('#G_WORKING').html(workingG);
+              $('#G_IDLE').html(idleG);
+              $('#G_NORMAL').html(normalG);
+              $('#G_STANDBY').html(standbyG);
+              $('#G_OFFLINE').html(offlineG);
               $('#G_GOOD').html(goodG);
               $('#G_NOTGOOD').html(notGoodG);
               $('#G_RATE').html(rateG.toFixed(2) + '%');
               $('#A_TOTAL').html(totalA);
+              $('#A_WORKING').html(workingA);
+              $('#A_IDLE').html(idleA);
+              $('#A_NORMAL').html(normalA);
+              $('#A_STANDBY').html(standbyA);
+              $('#A_OFFLINE').html(offlineA);
               $('#A_GOOD').html(goodA);
               $('#A_NOTGOOD').html(notGoodA);
               $('#A_RATE').html(rateA.toFixed(2) + '%');
               $('#TC_TOTAL').html(totalTC);
+              $('#TC_WORKING').html(workingOther);
+              $('#TC_IDLE').html(idleOther);
+              $('#TC_NORMAL').html(normalOther);
+              $('#TC_STANDBY').html(standbyOther);
+              $('#TC_OFFLINE').html(offlineOther);
               $('#TC_GOOD').html(goodTC);
               $('#TC_NOTGOOD').html(notGoodTC);
               $('#TC_RATE').html(rateTC.toFixed(2) + '%');
-            }
 
-            // 計算各機種的稼動率 --------END
+            });
+            // 接收到 PING 資料 --------END
 
             // 收到數量統計 SUM 資料 --------START
             socket.on('SUM', function(msg) {
@@ -243,10 +399,7 @@
             // 各機台的表單資料轉換成 csv 檔下載 --------START
             function getCSVfile() {
               var fileName = "report";
-                
-              //var array  = typeof tatalData != 'object' ? JSON.parse(tatalData) : tatalData;
-              //var array  = tatalData;
-              var str = 'ID,TYPE,IP,NOTE,STATUS,ALIVE,QTY\r\n';
+              var str = 'ID,MODEL,IP,NOTE,STATUS,ALIVE,QTY\r\n';
                
               for(var x = 0, y = totalData.length; x < y; x++) {
                   var line = '';
@@ -302,9 +455,14 @@
               mapDoc = factoryMap.contentDocument;
               socket.emit('boxStatusPic','loadFinish');
             }
+
+            function loadMapData() {
+              var factoryMap = document.getElementById("factory_map");
+              factoryMap.setAttribute('data', getMapFile());
+            }
         </script>
     </head>
-    <body>    
+    <body onLoad="loadMapData();">    
         <div><input type="button" value="CSV Report" onclick="getCSVfile()" /></div><br />
         <!-- 分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線 -->
         <div id="dailySum">
@@ -317,7 +475,7 @@
                         <th>組立</th>
                         <th>老化</th>
                         <th>選別</th>
-                        <th>加工切角</th>
+                        <th>加工切腳</th>
                     </tr>
                 </thead>
                 <tbody align="center">
@@ -358,8 +516,8 @@
                         <th>類型</th>
                         <th>圖例</th>
                         <th>總裝機數</th>
-                        <th bgcolor="#00ff00">正常</th><th bgcolor="#ffff00">閒置</th>
-                        <th bgcolor="#006600">無良品數</th><th bgcolor="#ff0000">待機</th><th bgcolor="#0000ff">未上線</th>
+                        <th bgcolor="#00ff00">正常</th><th bgcolor="#ffff00">閒置</th><th>小計</th>
+                        <th bgcolor="#006600">無良品數</th><th bgcolor="#ff0000">待機</th><th bgcolor="#0000ff">未上線</th><th>小計</th>
                         <th>稼動率</th>
                     </tr>
                 </thead>
@@ -368,32 +526,32 @@
                         <td>加締</td>
                         <td><object data="/square.svg" type="image/svg+xml" width="30%" height="30%"></object></td>
                         <td id="E_TOTAL"></td>
-                        <td id="E_GOOD" colspan="2"></td>
-                        <td id="E_NOTGOOD" colspan="3"></td>
+                        <td bgcolor="#00ff00" id="E_WORKING"></td><td bgcolor="#ffff00" id="E_IDLE"></td><td id="E_GOOD"></td>
+                        <td bgcolor="#006600" id="E_NORMAL"></td><td bgcolor="#ff0000" id="E_STANDBY"></td><td bgcolor="#0000ff" id="E_OFFLINE"></td><td id="E_NOTGOOD"></td>
                         <td id="E_RATE"></td>
                     </tr>
                     <tr>
                         <td>組立</td>
                         <td><object data="/triangle.svg" type="image/svg+xml" width="30%" height="30%"></object></td>
                         <td id="G_TOTAL"></td>
-                        <td id="G_GOOD" colspan="2"></td>
-                        <td id="G_NOTGOOD" colspan="3"></td>
+                        <td bgcolor="#00ff00" id="G_WORKING"></td><td bgcolor="#ffff00" id="G_IDLE"></td><td id="G_GOOD"></td>
+                        <td bgcolor="#006600" id="G_NORMAL"></td><td bgcolor="#ff0000" id="G_STANDBY"></td><td bgcolor="#0000ff" id="G_OFFLINE"></td><td id="G_NOTGOOD"></td>
                         <td id="G_RATE"></td>
                     </tr>
                     <tr>
                         <td>老化</td>
                         <td><object data="/circle.svg" type="image/svg+xml" width="30%" height="30%"></object></td>
                         <td id="A_TOTAL"></td>
-                        <td id="A_GOOD" colspan="2"></td>
-                        <td id="A_NOTGOOD" colspan="3"></td>
+                        <td bgcolor="#00ff00" id="A_WORKING"></td><td bgcolor="#ffff00" id="A_IDLE"></td><td id="A_GOOD"></td>
+                        <td bgcolor="#006600" id="A_NORMAL"></td><td bgcolor="#ff0000" id="A_STANDBY"></td><td bgcolor="#0000ff" id="A_OFFLINE"></td><td id="A_NOTGOOD"></td>
                         <td id="A_RATE"></td>
                     </tr>
                     <tr>
-                        <td>其他(選別，加工切角)</td>
+                        <td>其他(選別，加工切腳)</td>
                         <td><object data="/pentagon.svg" type="image/svg+xml" width="30%" height="30%"></object></td>
                         <td id="TC_TOTAL"></td>
-                        <td id="TC_GOOD" colspan="2"></td>
-                        <td id="TC_NOTGOOD" colspan="3"></td>
+                        <td bgcolor="#00ff00" id="TC_WORKING"></td><td bgcolor="#ffff00" id="TC_IDLE"></td><td id="TC_GOOD"></td>
+                        <td bgcolor="#006600" id="TC_NORMAL"></td><td bgcolor="#ff0000" id="TC_STANDBY"></td><td bgcolor="#0000ff" id="TC_OFFLINE"></td><td id="TC_NOTGOOD"></td>
                         <td id="TC_RATE"></td>
                     </tr>
                 </tbody>
@@ -437,28 +595,9 @@
                 </tbody>
             </table>
         </div>
-        <!--
-        <div align="center">
-            加締
-            <select id="SELECT_E"></select>
-            <button type="button">顯示狀態</button> 
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            組立
-            <select id="SELECT_G"></select>
-            <button type="button">顯示狀態</button> 
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            老化
-            <select id="SELECT_A"></select>
-            <button type="button">顯示狀態</button> 
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            其他(選別，加工切角)
-            <select id="SELECT_TC"></select>
-            <button type="button">顯示狀態</button> 
-        </div>
-        -->
         <!-- 分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線 -->
         <br />
-        <object onload="loadMapOK();" data="/optimized_3.svg" type="image/svg+xml" id="factory_map" width="100%" height="100%"></object>
+        <object onload="loadMapOK();" data="" type="image/svg+xml" id="factory_map" width="100%" height="100%"></object>
         <!-- 分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線分隔線 -->
         <div id="data">
             <table border="1" width="80%">
@@ -466,7 +605,5 @@
                 </tbody>
             </table>
         </div>
-
-        
     </body>
 </html>

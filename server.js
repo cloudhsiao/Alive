@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var email = require('emailjs');
 var run = require('./app.js');
+var config = require('./config/general.js').general;
 
 var errorRate = 0.0;
 var errerAlert = 0.30;
@@ -22,13 +23,16 @@ console.log("Alive server start.");
 app.use(express.static(__dirname + '/javascript'));
 app.use(express.static(__dirname + '/images'));
 
+app.get('/pic/common.js', function(req, res) {
+  res.send('function getHostName() { return "' + config.host + '"; } function getMapFile() { return "' + config.factoryMapFile + '"; } function getBranchName() { return "' + config.branch + '"; }');
+});
 
 app.get('/pic', function(req, res) {
   res.sendFile(__dirname + '/boxStatusPic.html');
 });
 
 io.on('connection', function(socket) {
-  console.log('a user connected');
+  console.log('user connected');
 
   socket.on('boxStatusPic', function(msg) {
     if(tmpIpArray != null && tmpDailySum != null) {
