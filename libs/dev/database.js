@@ -1,5 +1,5 @@
 var fs = require('fs');
-var config = require('../config/general.js').general;
+var config = require('../../config/general.js').site;
 
 exports.getStatus = function (cb) {  
   fs.readFile(config.ipMappingFile, 'utf8', function parseJson(err, data) {

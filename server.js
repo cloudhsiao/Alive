@@ -4,7 +4,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var email = require('emailjs');
 var run = require('./app.js');
-var config = require('./config/general.js').general;
+var config = require('./config/general.js').site;
+var port = require('./config/general.js').port;
 
 var errorRate = 0.0;
 var errerAlert = 0.30;
@@ -17,8 +18,6 @@ var mailServer = email.server.connect({
 
 var tmpIpArray;
 var tmpDailySum;
-
-console.log("Alive server start.");
 
 app.use(express.static(__dirname + '/javascript'));
 app.use(express.static(__dirname + '/images'));
@@ -52,13 +51,11 @@ io.on('connection', function(socket) {
   });
 });
 
-http.listen(8080, function() {
-  console.log('listening on 8080');
+http.listen(port, function() {
+  console.log('server started and listening on port ' + port + ' ...');
 });
 
 run.start(function(ipArray, dailySum) {
-  //console.log('!!!!!!!!!!!!!!!!!!' + ipArray);
-  //console.log('!!!!!!!!!!!!!!!!!!' + dailySum.MEDIUM_E);
   tmpIpArray = ipArray;
   tmpDailySum = dailySum;
   io.emit('PING', JSON.stringify(ipArray));

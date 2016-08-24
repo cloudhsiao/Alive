@@ -2,7 +2,7 @@
 The code has merged both Taicon DG & SZ. 
 
 ## How
-open `config/general.js` and change following settings to fit the right site.
+Open `config/general.js` and change following settings to fit the right site.
 
 Setting for Taicon-DG:
 
@@ -24,6 +24,13 @@ config.general = {
   ipMappingFile: './config/ipMapping_sz.json',
   factoryMapFile: '/optimized_sz_2.svg'
 };
+```
+
+## Test and Production
+The site will launch as `dev` mode by defult, but you can switch to `production` easily.
+
+```bash
+$ sudo NODE_ENV=production node server.js
 ```
 
 ## License

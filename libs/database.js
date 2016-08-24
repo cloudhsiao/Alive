@@ -1,21 +1,13 @@
 var MongoClient = require('mongodb').MongoClient;
 var moment = require('moment');
+var assert = require('assert');
+var objectId = require('mongodb').ObjectID;
+var url = 'mongodb://localhost:27017/zhenhai';
 
-//var offsetOf7Hours = 7 * 60 * 60 * 1000
-//var originalDate = new Date();
-//var date = new Date(originalDate.getTime() - offsetOf7Hours);
-//var year = date.getFullYear();
-//var month = date.getMonth() + 1;
-//month = (month < 10 ? "0" : "") + month;
-//var day = date.getDate();
-//day = (day < 10 ? "0" : "") + day;
-//var today = year + "-" + month + "-" + day;
-var today;// = moment().format('YYYY-MM-DD');
-
+var today;
 const BIG = "16 - 18";
 const MEDIUM = "10 - 12.5";
 const SMALL = "5 - 8";
-
 const TYPE_E = 1;
 const TYPE_G = 2;
 const TYPE_A = 3;
@@ -23,11 +15,12 @@ const TYPE_A4 = 4;
 const TYPE_TC = 5;
 
 exports.getDailySum = function queryDatabase(cb) {
-  MongoClient.connect("mongodb://localhost:27017/zhenhai", function(err, db) {
-    if(err) { return console.dir(err); }
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
 
     var collection = db.collection('daily');
-  
+    var data = {};
+
     var BIG_E = 0;
     var BIG_G = 0;
     var BIG_A = 0;
@@ -45,34 +38,25 @@ exports.getDailySum = function queryDatabase(cb) {
     var SMALL_A = 0;
     var SMALL_A4 = 0;
     var SMALL_TC = 0;
-
-    var data = {};
-
-     console.log(moment().format('h') + ' ' + moment().format('H'));
+    
     if (moment().format('H') < 7) {
       today = moment().subtract(1, 'day').format('YYYY-MM-DD');
     } else {
       today = moment().format('YYYY-MM-DD');
     }
-    console.log("dbDaily.js - today:" + today);
-    var stream = collection.find({"shiftDate":today}).stream();
+
+    var stream = collection.find({"shiftDate": today}).stream();
 
     stream.on("data", function(item) {
-      //console.log(item.mach_id);
       if (item.capacityRange === BIG && item.machineType === TYPE_E) {
-        //console.log("big e:" + item.count_qty);
         BIG_E += item.count_qty;
       } else if (item.capacityRange === BIG && item.machineType === TYPE_G) {
-        //console.log("big g:" + item.count_qty);
         BIG_G += item.count_qty;
       } else if (item.capacityRange === BIG && item.machineType === TYPE_A) {
-        //console.log("big a:" + item.count_qty);
         BIG_A += item.count_qty;
       } else if (item.capacityRange === BIG && item.machineType === TYPE_A4) {
-        //console.log("big a4:" + item.count_qty);
         BIG_A4 += item.count_qty;
       } else if (item.capacityRange === BIG && item.machineType === TYPE_TC) {
-        //console.log("big tc:" + item.count_qty);
         BIG_TC += item.count_qty;
       } else if (item.capacityRange === MEDIUM && item.machineType === TYPE_E) {
         MEDIUM_E += item.count_qty;
@@ -93,7 +77,6 @@ exports.getDailySum = function queryDatabase(cb) {
       } else if (item.capacityRange === SMALL && item.machineType === TYPE_A4) {
         SMALL_A4 += item.count_qty;
       } else if (item.capacityRange === SMALL && item.machineType === TYPE_TC) {
-        //console.log("small tc:" + item.count_qty);
         SMALL_TC += item.count_qty;
       }
     });
@@ -119,31 +102,54 @@ exports.getDailySum = function queryDatabase(cb) {
       data["SMALL_A4"] = SMALL_A4;
       data["SMALL_TC"] = SMALL_TC;
 
-/*
-      console.log("---------------------------------------------------");
-      console.log('BIG');
-      console.log(BIG_E);
-      console.log(BIG_G);
-      console.log(BIG_A);
-      console.log(BIG_A4);
-      console.log(BIG_TC);
-  
-      console.log('MEDIUM');
-      console.log(MEDIUM_E);
-      console.log(MEDIUM_G);
-      console.log(MEDIUM_A);
-      console.log(MEDIUM_A4);
-      console.log(MEDIUM_TC);
-  
-      console.log('SMALL');
-      console.log(SMALL_E);
-      console.log(SMALL_G);
-      console.log(SMALL_A);
-      console.log(SMALL_A4);
-      console.log(SMALL_TC);
-      console.log("---------------------------------------------------");
-*/
       cb(data);
     });
   });
 }
+
+exports.getQty = function (callback) {
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+
+    var collection = db.collection('dailyMachineCount');
+    var result = [];
+    var stream = collection.find({'insertDate':moment().format('YYYY-MM-DD')}).stream();
+
+    stream.on("data", function(doc) {
+      var item = {};
+      item["ID"] = doc.machineID;
+      item["QTY"] = doc.count_qty;
+      result.push(item);
+    });
+
+    stream.on("end", function() {
+      db.close();
+      callback(result);
+    });
+  });
+};
+
+exports.getStatus = function (callback) {
+  var now = new Date();
+  var time = ( new Date( now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate() ) ).getTime() / 1000;
+
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+
+    var collection = db.collection('machineStatus');
+    var result = [];
+    var stream = collection.find({'lastUpdateTime': { '$gte': time}}).stream();
+
+    stream.on("data", function(doc) {
+      var item = {};
+      item["ID"] = doc.machineID;
+      item["STATUS"] = doc.status;
+      result.push(item);
+    });
+
+    stream.on("end", function() {
+      db.close();
+      callback(result);
+    });
+  });
+};

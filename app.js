@@ -1,57 +1,34 @@
 var flow = require('nimble');
+var fs = require('fs');
 var child_process = require('child_process');
-var config = require('./config/general.js').general;
-var readIp = require('./libs/readIp.js');
+var config = require('./config/general.js').site;
 
-//var pingIp = child_process.fork('./libs/pingIp.js');
-//var dbStatus = require('./libs/dbStatus.js');
-//var dbQty = require('./libs/dbQty.js');
-//var dbDaily = require('./libs/dbDaily.js');
+var env = process.env.NODE_ENV || 'dev';
+var pingIp;
+var database;
 
-var pingIp = child_process.fork('./libs/pingFakeIp.js');
-var dbStatus = require('./libs/testLib.js');
-var dbQty = require('./libs/testLib.js');
-var dbDaily = require('./libs/testLib.js');
+if (env === 'dev') {
+  console.log('server is running in dev mode');
+  pingIp = child_process.fork('./libs/dev/pingIp.js');
+  database = require('./libs/dev/database.js');
+} else {
+  console.log('server is running in production mode');
+  pingIp = child_process.fork('./libs/pingIp.js');
+  database = require('./libs/database.js');
+}
 
-var ipArray = []; // data from ipMapping.json
+var ipArray = [];
 var dailySum = {};
-
-function getSTATUS(cb) {
-  dbStatus.getStatus(function(result) {
-    var idx;
-    for(idx = 0; idx < ipArray.length; idx++) {
-      var data = result.filter(function(obj) {
-        return obj.ID === ipArray[idx].ID;
-      });
-      if(data.length > 0) {
-        ipArray[idx].STATUS = data[0].STATUS;
-      }
-    }
-    cb();
-  });
-}
-
-function getQTY(cb) {
-  dbQty.getQty(function(result) {
-    var idx;
-    for(idx = 0; idx < ipArray.length; idx++) {
-      var data = result.filter(function(obj) {
-        return obj.ID === ipArray[idx].ID;
-      });
-      if(data.length > 0) {
-        ipArray[idx].QTY = data[0].QTY;
-        //console.log('QTY: ' + ipArray[idx].ID + '-->' + ipArray[idx].QTY);
-      }
-    }
-    cb();
-  });
-}
 
 exports.start = function(cb) {
   flow.series([
     // 1. first of all, we read all ip from the file.
     function(callback) {
-      readIp.read(config.ipMappingFile, function(data){
+      fs.readFile(config.ipMappingFile, 'utf8', function(err, data) {
+        if(err) {
+          console.log('read file err: ' + err);
+          throw err;
+        }
         ipArray = JSON.parse(data);
         callback();
       });
@@ -74,30 +51,49 @@ exports.start = function(cb) {
             ipArray[idx].ALIVE = 0;
           }
         }
-
-        flow.series([
-          function(callback) {
-            getSTATUS(function() {
-              callback();
-            });
-          },
-          function(callback) {
-            getQTY(function() {
-              callback();
-            });
-          }, 
-          function(callback) {
-            dbDaily.getDailySum(function(data) {
-              dailySum = data;
-              callback();
-            });
-          },
-          function(callback) {
-            cb(ipArray, dailySum);
-            callback();
-          }
-        ]);
       });
+      callback();
+    },
+    // 3. get machine status from database
+    function(callback) {
+      database.getStatus(function(result) {
+        var idx;
+        for(idx = 0; idx < ipArray.length; idx++) {
+          var data = result.filter(function(obj) {
+            return obj.ID === ipArray[idx].ID;
+          });
+          if(data.length > 0) {
+            ipArray[idx].STATUS = data[0].STATUS;
+          }
+        }
+        callback();
+      });
+    },
+    // 4. get produce quantity from database
+    function(callback) {
+      database.getQty(function(result) {
+        var idx;
+        for(idx = 0; idx < ipArray.length; idx++) {
+          var data = result.filter(function(obj) {
+            return obj.ID === ipArray[idx].ID;
+          });
+          if(data.length > 0) {
+            ipArray[idx].QTY = data[0].QTY;
+          }
+        }
+        callback();
+      });
+    }, 
+    // 5. get daily summary from database
+    function(callback) {
+      database.getDailySum(function(data) {
+        dailySum = data;
+        callback();
+      });
+    },
+    // final. return to main function
+    function(callback) {
+      cb(ipArray, dailySum);
       callback();
     }
   ]);
