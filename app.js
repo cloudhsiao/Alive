@@ -51,49 +51,52 @@ exports.start = function(cb) {
             ipArray[idx].ALIVE = 0;
           }
         }
-      });
-      callback();
-    },
-    // 3. get machine status from database
-    function(callback) {
-      database.getStatus(function(result) {
-        var idx;
-        for(idx = 0; idx < ipArray.length; idx++) {
-          var data = result.filter(function(obj) {
-            return obj.ID === ipArray[idx].ID;
-          });
-          if(data.length > 0) {
-            ipArray[idx].STATUS = data[0].STATUS;
+
+        flow.series([
+          // 3. get machine status from database
+          function(callback) {
+            database.getStatus(function(result) {
+              var idx;
+              for(idx = 0; idx < ipArray.length; idx++) {
+                var data = result.filter(function(obj) {
+                  return obj.ID === ipArray[idx].ID;
+                });
+                if(data.length > 0) {
+                  ipArray[idx].STATUS = data[0].STATUS;
+                }
+              }
+              callback();
+            });
+          },
+          // 4. get produce quantity from database
+          function(callback) {
+            database.getQty(function(result) {
+              var idx;
+              for(idx = 0; idx < ipArray.length; idx++) {
+                var data = result.filter(function(obj) {
+                  return obj.ID === ipArray[idx].ID;
+                });
+                if(data.length > 0) {
+                  ipArray[idx].QTY = data[0].QTY;
+                }
+              }
+              callback();
+            });
+          }, 
+          // 5. get daily summary from database
+          function(callback) {
+            database.getDailySum(function(data) {
+              dailySum = data;
+              callback();
+            });
+          },
+          // final. return to main function
+          function(callback) {
+            cb(ipArray, dailySum);
+            callback();
           }
-        }
-        callback();
+        ]);
       });
-    },
-    // 4. get produce quantity from database
-    function(callback) {
-      database.getQty(function(result) {
-        var idx;
-        for(idx = 0; idx < ipArray.length; idx++) {
-          var data = result.filter(function(obj) {
-            return obj.ID === ipArray[idx].ID;
-          });
-          if(data.length > 0) {
-            ipArray[idx].QTY = data[0].QTY;
-          }
-        }
-        callback();
-      });
-    }, 
-    // 5. get daily summary from database
-    function(callback) {
-      database.getDailySum(function(data) {
-        dailySum = data;
-        callback();
-      });
-    },
-    // final. return to main function
-    function(callback) {
-      cb(ipArray, dailySum);
       callback();
     }
   ]);
