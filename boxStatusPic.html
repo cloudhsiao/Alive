@@ -135,80 +135,96 @@
                 if (status === COLOR_WORKING) {
                   workingE++;
                   goodE++;
+                  totalE++;
                 } else if (status === COLOR_IDLE) {
                   idleE++;
                   goodE++;
+                  totalE++;
                 } else if (status === COLOR_NORMAL) {
                   normalE++;
                   notGoodE++;
+                  totalE++;
                 } else if (status === COLOR_STANDBY) {
                   standbyE++;
                   notGoodE++;
+                  totalE++;
                 } else if (status === COLOR_OFFLINE) {
                   offlineE++;
                   notGoodE++;
+                  totalE++;
                 }
-                totalE++;                
               }
               
               if (type === 2) {
                 if (status === COLOR_WORKING) {
                   workingG++;
                   goodG++;
+                  totalG++;
                 } else if (status === COLOR_IDLE) {
                   idleG++;
                   goodG++;
+                  totalG++;
                 } else if (status === COLOR_NORMAL) {
                   normalG++;
                   notGoodG++;
+                  totalG++;
                 } else if (status === COLOR_STANDBY) {
                   standbyG++;
                   notGoodG++;
+                  totalG++;
                 } else if (status === COLOR_OFFLINE) {
                   offlineG++;
                   notGoodG++;
+                  totalG++;
                 }
-                totalG++;  
               }
               
               if (type === 3) {
                 if (status === COLOR_WORKING) {
                   workingA++;
                   goodA++;
+                  totalA++;
                 } else if (status === COLOR_IDLE) {
                   idleA++;
                   goodA++;
+                  totalA++;
                 } else if (status === COLOR_NORMAL) {
                   normalA++;
                   notGoodA++;
+                  totalA++;
                 } else if (status === COLOR_STANDBY) {
                   standbyA++;
                   notGoodA++;
+                  totalA++;
                 } else if (status === COLOR_OFFLINE) {
                   offlineA++;
                   notGoodA++;
+                  totalA++;
                 }
-                totalA++; 
               }
 
               if (type === TYPE_T || type === TYPE_C || type === TYPE_B) {
                 if (status === COLOR_WORKING) {
                   workingOther++;
                   goodTC++;
+                  totalTC++;
                 } else if (status === COLOR_IDLE) {
                   idleOther++;
                   goodTC++;
+                  totalTC++;
                 } else if (status === COLOR_NORMAL) {
                   normalOther++;
                   notGoodTC++;
+                  totalTC++;
                 } else if (status === COLOR_STANDBY) {
                   standbyOther++;
                   notGoodTC++;
+                  totalTC++;
                 } else if (status === COLOR_OFFLINE) {
                   offlineOther++;
                   notGoodTC++;
+                  totalTC++;
                 }
-                totalTC++; 
               }
             }
 
