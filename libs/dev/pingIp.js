@@ -1,5 +1,4 @@
-var config_ping = require('../../config/ping.js').ping;
-var config_range = require('../../config/general.js').site;
+var config = require('../../config/config.js');
 var pingSet = []; // where are all IPs that we need to ping.
 
 function initIpArray(ipRange, upper, lower, ignoreIPs) {
@@ -38,12 +37,11 @@ function getAliveResult(errorTimes) {
   process.send(failedIp);
 }
 
-for (var i = 0; i < config_range.ipRange.length; i++) {
-  initIpArray(config_range.ipRange[i].range, config_range.ipRange[i].upper, config_range.ipRange[i].lower, config_range.ipRange[i].ignore);
+for (var i = 0; i < config.site.machine.length; i++) {
+  if (config.site.machine[i].IP !== '') {
+    pingSet.push(config.site.machine[i].IP);
+  }
 }
 
 checkAlive();
 getAliveResult(10000, 1);
-
-// setInterval(checkAlive, config_ping.pingTime);
-// setInterval(getAliveResult, config_ping.checkTime, config_ping.errorTimes);

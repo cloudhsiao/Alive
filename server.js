@@ -4,8 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var email = require('emailjs');
 var run = require('./app.js');
-var config = require('./config/general.js').site;
-var port = require('./config/general.js').port;
+var config = require('./config/config.js');
 
 var errorRate = 0.0;
 var errerAlert = 0.30;
@@ -23,7 +22,7 @@ app.use(express.static(__dirname + '/javascript'));
 app.use(express.static(__dirname + '/images'));
 
 app.get('/pic/common.js', function(req, res) {
-  res.send('function getHostName() { return "' + config.host + '"; } function getMapFile() { return "' + config.factoryMapFile + '"; } function getBranchName() { return "' + config.branch + '"; }');
+  res.send('function getHostName() { return "' + config.site.host + '"; } function getMapFile() { return "' + config.site.map + '"; } function getBranchName() { return "' + config.site.alias + '"; }');
 });
 
 app.get('/pic', function(req, res) {
@@ -51,8 +50,8 @@ io.on('connection', function(socket) {
   });
 });
 
-http.listen(port, function() {
-  console.log('server started and listening on port ' + port + ' ...');
+http.listen(config.port, function() {
+  console.log('server started and listening on port ' + config.port + ' ...');
 });
 
 run.start(function(ipArray, dailySum) {

@@ -1,36 +1,57 @@
 # Alive
 The code has merged both Taicon DG & SZ. 
 
-## How
-Open `config/general.js` and change following settings to fit the right site.
+## Configuration
+Open `config/config.js` and change settings as the following format to fit the right site.
 
-Setting for Taicon-DG:
-
+```json
+{
+  "alias": "dg",
+  "host": "221.4.141.xxx",
+  "map": "/optimized_dg_3.svg",
+  "machine": [
+    {
+      "ID": "A01",
+      "MODEL": "CS-204K", 
+      "IP": "192.168.10.xxx", 
+      "QTY": 0,  
+      "ALIVE": 0, 
+      "SIZE": "xxx", 
+      "TYPE": 3,
+      "NOTE": "xxx", 
+      "STATUS": "", 
+    }
+  ]
+}    
 ```
-config.general = {
-  host: '221.4.141.146',
-  branch: 'dg',
-  ipMappingFile: './config/ipMapping_dg.json',
-  factoryMapFile: '/optimized_dg_3.svg'
-};
-```
 
-Setting for Taicon-SZ:
+- alias: branch name, ex `dg` or `sz`.
+- host: the host of dashboard.
+- map: the locaton of the fatory map.
+- machine: the machine list.
+  - The following field are pre-defined:
+    - `ID`
+    - `MODEL`
+    - `IP`
+    - `SIZE`
+    - `NOTE`
+    - `TYPE`:
+      - 1: 加締
+      - 2: 組立
+      - 3: 老化
+      - 4: 加工
+      - 5: 包裝
+  - The following field will check online:
+    - `QTY`
+    - `ALIVE`
+    - `STATUS`
 
-```
-config.general = {
-  host: '218.4.250.102',
-  branch: 'sz',
-  ipMappingFile: './config/ipMapping_sz.json',
-  factoryMapFile: '/optimized_sz_2.svg'
-};
-```
 
-## Test and Production
+## Launch the server
 The site will launch as `dev` mode by defult, but you can switch to `production` easily.
 
 ```bash
-$ sudo NODE_ENV=production node server.js
+$ sudo NODE_ENV=production CONFIG=./config/dg.json node server.js
 ```
 
 ## License

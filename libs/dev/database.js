@@ -1,50 +1,43 @@
 var fs = require('fs');
-var config = require('../../config/general.js').site;
+var config = require('../../config/config.js');
 
 exports.getStatus = function (cb) {  
-  fs.readFile(config.ipMappingFile, 'utf8', function parseJson(err, data) {
-    if (err) throw err;
-    var obj = JSON.parse(data);
-    var result = [];
-    for (var i = 0; i < obj.length; i++) {
-      var item = {};
-      item["ID"] = obj[i].ID;
+  var result = [];
+  for (var i = 0; i < config.site.machine.length; i++) {
+    var obj = config.site.machine[i];
+    var item = {};
+    item["ID"] = obj.ID;
 
-      var s = Math.floor(Math.random() * (100 - 0 + 1) + 1);
-      if (s > 30) {
-        item["STATUS"] = '01';
+    var s = Math.floor(Math.random() * (100 - 0 + 1) + 1);
+    if (s > 30) {
+      item["STATUS"] = '01';
+    } else {
+      var t = Math.floor(Math.random() * 3 + 1);
+      if (t === 1) {
+        item["STATUS"] = '05';
+      } else if (t === 2) {
+        item["STATUS"] = '09';
       } else {
-        var t = Math.floor(Math.random() * 3 + 1);
-        if (t === 1) {
-          item["STATUS"] = '05';
-        } else if (t === 2) {
-          item["STATUS"] = '09';
-        } else {
-          item["STATUS"] = '10';
-        }
+        item["STATUS"] = '10';
       }
-      result.push(item);
     }
-    cb(result);
-  });
+    result.push(item);
+  }
+  cb(result);
 };
 
 exports.getQty = function (cb) {
-  fs.readFile(config.ipMappingFile, 'utf8', function parseJson(err, data) {
-    if (err) throw err;
-    var obj = JSON.parse(data);
-    var result = [];
-    for (var i = 0; i < obj.length; i++) {
-      var item = {};
-      item["ID"] = obj[i].ID;
+  var result = [];
+  for (var i = 0; i < config.site.machine.length; i++) {
+    var obj = config.site.machine[i];
+    var item = {};
+    item["ID"] = obj.ID;
 
-      var qty = Math.floor(Math.random() * (999 - 100 + 1) + 100);
-      item["QTY"] = qty > 950 ? 0 : qty;
-
-      result.push(item);
-    }
-    cb(result);
-  });  
+    var qty = Math.floor(Math.random() * (999 - 100 + 1) + 100);
+    item["QTY"] = qty > 950 ? 0 : qty;
+    result.push(item);
+  }
+  cb(result);
 };
 
 exports.getDailySum = function(callback) {

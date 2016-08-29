@@ -1,7 +1,7 @@
 var flow = require('nimble');
 var fs = require('fs');
 var child_process = require('child_process');
-var config = require('./config/general.js').site;
+var config = require('./config/config.js');
 
 var env = process.env.NODE_ENV || 'dev';
 var pingIp;
@@ -24,14 +24,8 @@ exports.start = function(cb) {
   flow.series([
     // 1. first of all, we read all ip from the file.
     function(callback) {
-      fs.readFile(config.ipMappingFile, 'utf8', function(err, data) {
-        if(err) {
-          console.log('read file err: ' + err);
-          throw err;
-        }
-        ipArray = JSON.parse(data);
-        callback();
-      });
+      ipArray = config.site.machine;
+      callback();
     },
     // 2. get ping data.
     function(callback) {
