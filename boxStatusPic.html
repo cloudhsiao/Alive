@@ -235,7 +235,7 @@
               }
               var ID = this.id;
               var branch = getBranchName();
-              var type = branch === 'dg' ? getMachineTypeByIDInDG(data[0].ID) : getMachineTypeByIDInSZ(data[0].ID);
+              var type = branch === 'dg' ? getMachineTypeByIDInDG(ID) : getMachineTypeByIDInSZ(ID);
 
               if (type > 3) {
                 type = 5;
