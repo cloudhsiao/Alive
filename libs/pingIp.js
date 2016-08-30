@@ -14,7 +14,8 @@ var session = ping.createSession(options);
 var pingSet = []; // where are all IPs that we need to ping.
 
 function checkAlive() {
-  for(var ip in pingSet) {
+  for(var i = 0; i < pingSet.length; i++) {
+    var ip = pingSet[i];
     setTimeout(pingHost(ip), 1000);
   }
 }

@@ -21,7 +21,7 @@ var tmpDailySum;
 app.use(express.static(__dirname + '/javascript'));
 app.use(express.static(__dirname + '/images'));
 
-app.get('/pic/common.js', function(req, res) {
+app.get('/common.js', function(req, res) {
   res.send('function getHostName() { return "' + config.site.host + '"; } function getMapFile() { return "' + config.site.map + '"; } function getBranchName() { return "' + config.site.alias + '"; }');
 });
 
